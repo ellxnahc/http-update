@@ -1,0 +1,73 @@
+<div class="container">
+  <h3>Add New Data</h3>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <form #postForm="ngForm" (ngSubmit)="onCreatePost(postForm.value)">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" required ngModel name="title"/>
+        </div>
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea class="form-control" id="content" required ngModel name="content"></textarea>
+        </div>
+        <button class="btn btn-primary mt-2" type="submit" [disabled]="!postForm.valid">Send Post</button>
+      </form>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <button class="btn btn-primary" (click)="onFetchPosts()">Fetch Posts</button>
+      |
+      <button class="btn btn-danger" [disabled]="loadedPosts.length < 1" (click)="onClearPosts()">Clear Posts</button>
+    </div>
+  </div>
+
+  <!-- Update -->
+  <h3>Update Data</h3>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <form #updateForm="ngForm">
+        <div class="form-group">
+          <label for="id">ID</label>
+          <input type="text" class="form-control" id="id" required [(ngModel)]="dataToBeUpdated.id" name="id" placeholder="{{dataToBeUpdated.id}}" disabled/>
+        </div>
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" required [(ngModel)]="dataToBeUpdated.title" name="title" placeholder="{{dataToBeUpdated.title}}"/>
+        </div>
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea class="form-control" id="content" required [(ngModel)]="dataToBeUpdated.content" name="content" placeholder="{{dataToBeUpdated.content}}"></textarea>
+        </div>
+        <button class="btn btn-primary mt-2" type="submit" [disabled]="!updateForm.form.valid" (click)="onUpdatePost(dataToBeUpdated)">Update Post</button>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <button class="btn btn-primary" (click)="onFetchPosts()">Fetch Posts</button>
+      |
+      <button class="btn btn-danger" [disabled]="loadedPosts.length < 1" (click)="onClearPosts()">Clear Posts</button>
+    </div>
+  </div>
+  <!-- Update End -->
+
+  <div class="row">
+    <div class="d-flex row justify-content-center text-center" *ngIf="showLoading">
+      <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem; margin-bottom: 10px;" role="status" ></div>
+      <span class="sr-only">L o a d i n g . . .</span>
+    </div>
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <p *ngIf="!loadedPosts && !showLoading">No posts available!</p>
+      <ul class="list-group" *ngIf="loadedPosts.length >= 1 && !showLoading">
+        <li class="list-group-item" *ngFor="let p of loadedPosts" (click)="updateData(p)">
+          <h4>{{p.title}}</h4>
+          <p>{{p.content}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
